@@ -217,13 +217,21 @@ public async Task<IActionResult> Create([FromForm] ProductDto dto)
 * MVC Form Create → `multipart/form-data`
 * MVC Edit Form → `application/json`
 
-### ✅ Dễ mở rộng sau này
+## 2. Cấu hình CORS (Cross-Origin Resource Sharing)
 
-* Có thể bổ sung:
+### 2.1 Đăng ký dịch vụ CORS (Program.cs)
 
-  * `PUT /api/Products/{id}/image` (nếu cần đổi ảnh)
-  * `PATCH` cho update từng field
+```csharp
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin", policy =>
+    {
+        policy.WithOrigins("https://localhost:44390") // Chỉ cho phép domain này
+              .AllowAnyMethod()   // Cho phép tất cả các HTTP method (GET, POST, PUT, DELETE...)
+              .AllowAnyHeader()   // Cho phép tất cả các header
+              .AllowCredentials(); // Cho phép gửi cookies hoặc authorization header
+    });
+});
 
----
-
-📘 **Khuyến nghị**: Giữ chuẩn này xuyên suốt project để tránh lỗi Swagger, lỗi Content-Type và khó bảo trì về sau.
+app.UseCors("AllowSpecificOrigin");
+app.UseStaticFiles();
