@@ -58,7 +58,7 @@ Tài liệu này mô tả **chuẩn thiết kế và triển khai API Product** 
 [HttpPut("{id}")]
 public async Task<IActionResult> Update(
     int id,
-    [FromBody] ProductDto dto)
+    [FromForm] ProductDto dto)
 {
     try
     {
